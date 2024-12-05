@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addVariable } from "../actions/addVariable";
+import { addVariable } from "../_actions/actions";
 
 export function AddVariableForm({ projectId }: { projectId: number }) {
   const [name, setName] = useState("");
