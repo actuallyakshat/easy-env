@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Easy ENV",
+  title: "Easy Env",
   description:
     "An application that allows you to securely store environment variables of your projects.",
 };

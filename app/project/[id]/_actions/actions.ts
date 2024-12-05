@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/db";
+import { revalidatePath } from "next/cache";
 
 export async function addVariable(
   projectId: number,
@@ -94,6 +95,7 @@ export async function deleteProject(projectId: number) {
     await prisma.project.delete({
       where: { id: projectId },
     });
+    revalidatePath("/project/" + projectId);
     return { success: true, message: "Project deleted successfully" };
   } catch (error) {
     console.error("Failed to delete project:", error);

@@ -171,7 +171,7 @@ export function VariableManager({
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Project Variables</h1>
+        <h1 className="text-xl font-bold">Project Variables</h1>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive">Delete Project</Button>
@@ -340,10 +340,10 @@ export function VariableManager({
                         </AlertDialog>
                       </div>
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs overflow-hidden text-ellipsis text-muted-foreground">
                       {revealedValues[variable.id]
                         ? variable.value
-                        : variable.value.replace(/./g, "•")}
+                        : variable.value.slice(0, 30).replace(/./g, "•")}
                     </div>
                   </div>
                 ))}

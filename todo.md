@@ -1,0 +1,2 @@
+- [ ] Fix Variables List Width
+- [ ] Improve Loading States for better UX

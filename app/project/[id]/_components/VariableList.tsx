@@ -28,7 +28,7 @@ export function VariableList({ variables }: { variables: Variable[] }) {
             <TableCell>{variable.name}</TableCell>
             <TableCell>
               <span className="bg-gray-100 px-2 py-1 rounded">
-                {variable.value.replace(/./g, "•")}
+                {variable.value.slice(0, 5).replace(/./g, "•")}
               </span>
             </TableCell>
           </TableRow>

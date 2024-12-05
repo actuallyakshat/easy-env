@@ -1,5 +1,6 @@
 import prisma from "@/db";
 import { VariableManager } from "./_components/VariableManager";
+import { Badge } from "@/components/ui/badge";
 
 interface ProjectPageProps {
   params: {
@@ -25,8 +26,9 @@ export default async function Project({ params }: ProjectPageProps) {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-3">{project.name}</h1>
-      <hr className="pb-6" />
+      <h1 className="text-3xl font-bold">{project.name}</h1>
+      <Badge variant={"outline"}>{project.variables.length} variables</Badge>
+      <hr className="my-3" />
       <VariableManager
         projectId={project.id}
         initialVariables={project.variables}
