@@ -23,6 +23,7 @@ export default function AddProjectDialog() {
   async function handleSubmit() {
     try {
       if (!clientUser) return;
+      setLoading(true);
       const response = await createProject({
         name,
         userId: clientUser.id,

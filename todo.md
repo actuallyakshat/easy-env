@@ -1,2 +1,3 @@
-- [ ] Fix Variables List Width
+- [x] Fix Variables List Width
 - [ ] Improve Loading States for better UX
+- [ ] Project not found page

@@ -63,6 +63,7 @@ export function VariableManager({
   const [additionLoading, setAdditionLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
+  const [deleteProjectLoading, setDeleteProjectLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -163,13 +164,15 @@ export function VariableManager({
   };
 
   const handleDeleteProject = async () => {
+    setDeleteProjectLoading(true);
     const result = await deleteProject(projectId);
     if (result.success) {
       toast.success(result.message);
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } else {
       toast.error(result.error);
     }
+    setDeleteProjectLoading(false);
   };
 
   const downloadEnv = async () => {
@@ -194,7 +197,7 @@ export function VariableManager({
           onOpenChange={setIsDeleteDialogOpen}
         >
           <AlertDialogTrigger asChild>
-            <Button variant="destructive">Delete Project</Button>
+            <Button variant="link">Delete Project</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -211,9 +214,9 @@ export function VariableManager({
                   e.preventDefault();
                   handleDeleteProject();
                 }}
-                disabled={loading}
+                disabled={deleteProjectLoading}
               >
-                {loading ? "Deleting..." : "Delete Project"}
+                {deleteProjectLoading ? "Deleting..." : "Delete Project"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
