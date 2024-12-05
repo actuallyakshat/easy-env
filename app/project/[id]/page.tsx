@@ -1,6 +1,7 @@
 import prisma from "@/db";
 import { VariableManager } from "./_components/VariableManager";
 import { Badge } from "@/components/ui/badge";
+import loading from "@/app/loading";
 
 interface ProjectPageProps {
   params: {

@@ -171,8 +171,8 @@ export function VariableManager({
       router.replace("/dashboard");
     } else {
       toast.error(result.error);
+      setDeleteProjectLoading(false);
     }
-    setDeleteProjectLoading(false);
   };
 
   const downloadEnv = async () => {
