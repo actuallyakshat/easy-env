@@ -28,6 +28,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Download, Edit, Eye, EyeOff, Trash } from "lucide-react";
+
 import { toast } from "sonner";
 import {
   addVariables,
@@ -54,13 +55,19 @@ export function VariableManager({
   const [input, setInput] = useState("");
   const [editingVariable, setEditingVariable] = useState<Variable | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [revealedValues, setRevealedValues] = useState<Record<number, boolean>>(
     {}
   );
+  const [loading, setLoading] = useState(false);
+  const [additionLoading, setAdditionLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setAdditionLoading(true);
 
     const newVariables = input
       .split("\n")
@@ -72,6 +79,7 @@ export function VariableManager({
 
     if (newVariables.length === 0) {
       toast.error("No valid variables found");
+      setAdditionLoading(false);
       return;
     }
 
@@ -83,6 +91,7 @@ export function VariableManager({
       toast.error(
         `Duplicate keys found: ${duplicates.map((d) => d.name).join(", ")}`
       );
+      setAdditionLoading(false);
       return;
     }
 
@@ -97,6 +106,7 @@ export function VariableManager({
           new Set(internalDuplicates)
         ).join(", ")}`
       );
+      setAdditionLoading(false);
       return;
     }
 
@@ -112,9 +122,11 @@ export function VariableManager({
     } else {
       toast.error(result.error);
     }
+    setAdditionLoading(false);
   };
 
   const handleDeleteVariable = async (variableId: number) => {
+    setLoading(true);
     const result = await deleteVariable(variableId);
     if (result.success) {
       toast.success(result.message);
@@ -122,11 +134,13 @@ export function VariableManager({
     } else {
       toast.error(result.error);
     }
+    setLoading(false);
   };
 
   const handleUpdateVariable = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingVariable) return;
+    setUpdateLoading(true);
 
     const result = await updateVariable(
       editingVariable.id,
@@ -145,6 +159,7 @@ export function VariableManager({
     } else {
       toast.error(result.error);
     }
+    setUpdateLoading(false);
   };
 
   const handleDeleteProject = async () => {
@@ -157,11 +172,13 @@ export function VariableManager({
     }
   };
 
-  const downloadEnv = () => {
+  const downloadEnv = async () => {
+    setDownloadLoading(true);
     const envContent = variables.map((v) => `${v.name}=${v.value}`).join("\n");
     const blob = new Blob([envContent], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, ".env");
+    await saveAs(blob, ".env");
     toast.success("Downloaded .env file");
+    setDownloadLoading(false);
   };
 
   const toggleRevealValue = (id: number) => {
@@ -170,9 +187,12 @@ export function VariableManager({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between pt-3 items-center">
         <h1 className="text-xl font-bold">Project Variables</h1>
-        <AlertDialog>
+        <AlertDialog
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
+        >
           <AlertDialogTrigger asChild>
             <Button variant="destructive">Delete Project</Button>
           </AlertDialogTrigger>
@@ -186,8 +206,14 @@ export function VariableManager({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteProject}>
-                Delete Project
+              <AlertDialogAction
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDeleteProject();
+                }}
+                disabled={loading}
+              >
+                {loading ? "Deleting..." : "Delete Project"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -215,11 +241,15 @@ export function VariableManager({
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="API_KEY=your-secret-key&#10;DATABASE_URL=your-database-url"
-                  className="min-h-[200px] resize-none noscrollbar"
+                  className="font-mono min-h-[200px] resize-none noscrollbar"
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Add Variables
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={additionLoading}
+              >
+                {additionLoading ? "Adding..." : "Add Variables"}
               </Button>
             </form>
           </CardContent>
@@ -230,9 +260,14 @@ export function VariableManager({
             <CardTitle className="text-xl font-semibold">
               Project Variables
             </CardTitle>
-            <Button variant="outline" size="sm" onClick={downloadEnv}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={downloadEnv}
+              disabled={downloadLoading}
+            >
               <Download className="h-4 w-4 mr-2" />
-              Download .env
+              {downloadLoading ? "Downloading..." : "Download .env"}
             </Button>
           </CardHeader>
           <CardContent>
@@ -308,7 +343,15 @@ export function VariableManager({
                                   }
                                 />
                               </div>
-                              <Button type="submit">Update Variable</Button>
+                              <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={updateLoading}
+                              >
+                                {updateLoading
+                                  ? "Updating..."
+                                  : "Update Variable"}
+                              </Button>
                             </form>
                           </DialogContent>
                         </Dialog>
@@ -332,18 +375,19 @@ export function VariableManager({
                                 onClick={() =>
                                   handleDeleteVariable(variable.id)
                                 }
+                                disabled={loading}
                               >
-                                Delete Variable
+                                {loading ? "Deleting..." : "Delete Variable"}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
                       </div>
                     </div>
-                    <div className="text-xs overflow-hidden text-ellipsis text-muted-foreground">
+                    <div className="font-mono text-xs text-muted-foreground">
                       {revealedValues[variable.id]
                         ? variable.value
-                        : variable.value.slice(0, 30).replace(/./g, "•")}
+                        : variable.value.slice(0, 20).replace(/./g, "•")}
                     </div>
                   </div>
                 ))}
