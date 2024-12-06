@@ -5,7 +5,7 @@ export default async function Home() {
   const { userId } = await auth();
 
   return (
-    <section className="bg-gray-50 -mt-16">
+    <section className="-mt-16">
       <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
         <div className="mx-auto max-w-4xl text-center">
           <h1 className="text-3xl font-extrabold sm:text-5xl">
@@ -17,8 +17,8 @@ export default async function Home() {
           </h1>
 
           <p className="mt-4 font-medium sm:text-xl/relaxed">
-            Easy Env allows you to store your environment variables at one place
-            so that you can access them anywhere, anytime.
+            Easy Env allows you to securely store your environment variables at
+            one place so that you can access them anywhere, anytime.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">

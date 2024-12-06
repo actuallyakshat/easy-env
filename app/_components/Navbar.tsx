@@ -5,7 +5,7 @@ import React from "react";
 
 export default function Navbar() {
   return (
-    <header className="fixed z-[49] h-16 w-full shadow-md">
+    <header className="fixed z-[49] bg-background h-16 w-full shadow-md">
       <nav className="max-w-screen-xl px-6 h-full mx-auto flex w-full items-center justify-between">
         <Link href={"/"}>
           <h2 className="font-extrabold text-lg">Easy Env</h2>
