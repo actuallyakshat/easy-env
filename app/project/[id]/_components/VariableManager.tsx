@@ -227,7 +227,7 @@ export function VariableManager({
         </AlertDialog>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 gap-4 md:gap-6">
         <Card className="w-full border-none shadow-none">
           <CardHeader className="px-0 md:px-4 pt-0 md:pt-4">
             <CardTitle className="text-lg md:text-xl font-semibold">
@@ -288,7 +288,7 @@ export function VariableManager({
             </Button>
           </CardHeader>
           <CardContent className="px-0 md:px-4">
-            <ScrollArea className="h-[300px] md:h-[400px] pr-2 md:pr-4">
+            <div className="pr-2 md:pr-4">
               <div className="space-y-2">
                 {variables.map((variable) => (
                   <div
@@ -296,7 +296,7 @@ export function VariableManager({
                     className="flex flex-col space-y-1 rounded-lg border p-2 md:p-3 text-xs md:text-sm"
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-medium text-foreground">
+                      <span className="font-medium text-foreground  truncate">
                         {variable.name}
                       </span>
                       <div className="flex space-x-2">
@@ -401,10 +401,10 @@ export function VariableManager({
                         </AlertDialog>
                       </div>
                     </div>
-                    <div className="font-mono text-xs text-muted-foreground">
+                    <div className="text-xs break-words flex-1 text-muted-foreground ">
                       {revealedValues[variable.id]
                         ? variable.value
-                        : variable.value.slice(0, 20).replace(/./g, "•")}
+                        : variable.value.replace(/./g, "•")}
                     </div>
                   </div>
                 ))}
@@ -414,7 +414,7 @@ export function VariableManager({
                   </div>
                 )}
               </div>
-            </ScrollArea>
+            </div>
           </CardContent>
         </Card>
       </div>
