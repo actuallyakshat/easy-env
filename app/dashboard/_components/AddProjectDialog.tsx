@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useGlobalStore } from "@/context/GlobalContext";
 import { createProject } from "../_actions/actions";
+import { toast } from "sonner";
 
 export default function AddProjectDialog() {
   const { clientUser } = useGlobalStore();
@@ -23,7 +24,12 @@ export default function AddProjectDialog() {
   async function handleSubmit() {
     try {
       if (!clientUser) return;
+      if (!name) {
+        toast.error("Please enter a project name");
+        return;
+      }
       setLoading(true);
+
       const response = await createProject({
         name,
         userId: clientUser.id,

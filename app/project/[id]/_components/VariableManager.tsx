@@ -189,15 +189,19 @@ export function VariableManager({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between pt-3 items-center">
-        <h1 className="text-xl font-bold">Project Variables</h1>
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col md:flex-row justify-between pt-3 items-start md:items-center">
+        <h1 className="text-lg md:text-xl font-bold mb-2 md:mb-0">
+          Project Variables
+        </h1>
         <AlertDialog
           open={isDeleteDialogOpen}
           onOpenChange={setIsDeleteDialogOpen}
         >
           <AlertDialogTrigger asChild>
-            <Button variant="link">Delete Project</Button>
+            <Button variant="link" className="p-0 md:p-2">
+              Delete Project
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -223,19 +227,19 @@ export function VariableManager({
         </AlertDialog>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border-none shadow-none">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <Card className="w-full border-none shadow-none">
+          <CardHeader className="px-0 md:px-4 pt-0 md:pt-4">
+            <CardTitle className="text-lg md:text-xl font-semibold">
               Add New Variables
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0 md:px-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label
                   htmlFor="variables"
-                  className="text-sm text-muted-foreground"
+                  className="text-xs md:text-sm text-muted-foreground"
                 >
                   Variables (one per line, KEY=VALUE format)
                 </Label>
@@ -244,7 +248,7 @@ export function VariableManager({
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="API_KEY=your-secret-key&#10;DATABASE_URL=your-database-url"
-                  className="font-mono min-h-[200px] resize-none noscrollbar"
+                  className="font-mono min-h-[150px] md:min-h-[200px] resize-none noscrollbar"
                 />
               </div>
               <Button
@@ -258,9 +262,9 @@ export function VariableManager({
           </CardContent>
         </Card>
 
-        <Card className="border-none shadow-none">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-xl font-semibold">
+        <Card className="w-full border-none shadow-none">
+          <CardHeader className="flex flex-row items-center justify-between px-0 md:px-4">
+            <CardTitle className="text-lg md:text-xl font-semibold">
               Project Variables
             </CardTitle>
             <Button
@@ -268,18 +272,28 @@ export function VariableManager({
               size="sm"
               onClick={downloadEnv}
               disabled={downloadLoading}
+              className="hidden md:flex"
             >
               <Download className="h-4 w-4 mr-2" />
               {downloadLoading ? "Downloading..." : "Download .env"}
             </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={downloadEnv}
+              disabled={downloadLoading}
+              className="md:hidden"
+            >
+              <Download className="h-4 w-4" />
+            </Button>
           </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[400px] pr-4">
+          <CardContent className="px-0 md:px-4">
+            <ScrollArea className="h-[300px] md:h-[400px] pr-2 md:pr-4">
               <div className="space-y-2">
                 {variables.map((variable) => (
                   <div
                     key={variable.id}
-                    className="flex flex-col space-y-1 rounded-lg border p-3 text-sm"
+                    className="flex flex-col space-y-1 rounded-lg border p-2 md:p-3 text-xs md:text-sm"
                   >
                     <div className="flex justify-between items-center">
                       <span className="font-medium text-foreground">
@@ -395,7 +409,7 @@ export function VariableManager({
                   </div>
                 ))}
                 {variables.length === 0 && (
-                  <div className="text-center text-sm text-muted-foreground py-4">
+                  <div className="text-center text-xs md:text-sm text-muted-foreground py-4">
                     No variables added yet
                   </div>
                 )}
